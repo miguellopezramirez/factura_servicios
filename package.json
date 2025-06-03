@@ -12,12 +12,17 @@
   "description": "",
   "dependencies": {
     "@sendgrid/mail": "^8.1.5",
+    "@vonage/server-sdk": "^3.21.0",
+    "@whiskeysockets/baileys": "^6.7.18",
     "apollo-server": "^3.13.0",
     "dotenv": "^16.5.0",
+    "express": "^4.21.2",
     "facturapi": "^4.8.3",
     "firebase": "^11.7.1",
     "firebase-admin": "^13.4.0",
     "graphql": "^16.11.0",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "qrcode-terminal": "^0.12.0",
+    "twilio": "^5.7.0"
   }
 }

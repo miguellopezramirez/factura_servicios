@@ -1,4 +1,7 @@
 const facturapi = require('../services/facturapi');
+const {sendFactura} = require('../services/emailService')
+const {sendText} = require('../services/twillio');
+const {sendWhatsapp} = require('../services/whatsapp')
 
 const resolvers = {
   Mutation: {
@@ -14,7 +17,7 @@ const resolvers = {
       if (!items || items.length === 0) {
         throw new Error('Debe incluir al menos un producto');
       }
-
+      const cliente = await facturapi.customers.retrieve(customer_id);
       const factura = await facturapi.invoices.create({
         customer: customer_id,
         items: items.map(item => ({
@@ -26,7 +29,13 @@ const resolvers = {
         use,
         type,
         date: new Date().toISOString()
-      });
+      })
+      Promise.all([ sendFactura(cliente.email, JSON.stringify(factura)),
+       sendText(cliente.phone, JSON.stringify(factura)),
+       sendWhatsapp(cliente.phone, JSON.stringify(factura))])
+      
+      
+      
 
       return {
         id: factura.id,
