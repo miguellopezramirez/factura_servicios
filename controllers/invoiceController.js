@@ -2,6 +2,7 @@ const facturapi = require('../services/facturapi');
 const {sendFactura} = require('../services/emailService')
 const {sendText} = require('../services/twillio');
 const {sendWhatsapp} = require('../services/whatsapp')
+const { generarPDF } = require('../services/pdfService');
 
 const resolvers = {
   Mutation: {
@@ -36,6 +37,15 @@ const resolvers = {
       
       
       
+
+      // Generar PDF con los datos de la factura
+    try {
+      const pdfPath = generarPDF(factura, items, `factura-${factura.id}.pdf`);
+      console.log('PDF generado en:', pdfPath);
+    } catch (error) {
+      console.error('Error al generar el PDF:', error.message);
+    }
+
 
       return {
         id: factura.id,
