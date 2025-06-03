@@ -1,0 +1,50 @@
+const facturapi = require('../services/facturapi');
+
+const resolvers = {
+  Mutation: {
+    createFactura: async (_, { 
+      customer_id, 
+      items, 
+      payment_form, 
+      payment_method = "PUE", 
+      use = "G01", 
+      type = "I" 
+    }) => {
+      // Validación básica
+      if (!items || items.length === 0) {
+        throw new Error('Debe incluir al menos un producto');
+      }
+
+      const factura = await facturapi.invoices.create({
+        customer: customer_id,
+        items: items.map(item => ({
+          product: item.product_id,
+          quantity: item.quantity
+        })),
+        payment_form,
+        payment_method,
+        use,
+        type,
+        date: new Date().toISOString()
+      });
+
+      return {
+        id: factura.id,
+        customer_id: factura.customer.id,
+        date: factura.date,
+        payment_form: factura.payment_form,
+        payment_method: factura.payment_method,
+        use: factura.use,
+        type: factura.type,
+        status: factura.status,
+        total: factura.total / 100, 
+        items: factura.items.map(item => ({
+          product_id: item.product.id, 
+          quantity: item.quantity
+        }))
+      };
+    }
+  }
+};
+
+module.exports = resolvers;
