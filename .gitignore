@@ -1,6 +1,7 @@
 .env
 /node_modules
 sender-key*.json
+pre-key-*json
 session-*.json
 package-lock.json
 temp/factura-*.pdf

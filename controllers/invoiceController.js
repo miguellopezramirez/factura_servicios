@@ -1,6 +1,6 @@
 const facturapi = require('../services/facturapi');
 const {sendFactura} = require('../services/emailService')
-const {sendText} = require('../services/twillio');
+const {sendText} = require('../services/sms');
 const {sendWhatsapp} = require('../services/whatsapp')
 const { generarPDF } = require('../services/pdfService');
 
@@ -32,8 +32,8 @@ const resolvers = {
         date: new Date().toISOString()
       })
       
-      await sendText(cliente.phone, "Ya está lista la factura por su compra en MIKES.COM"),
-      await sendWhatsapp(cliente.phone, "Ya está lista la factura por su compra en MIKES.COM")
+      await sendText(cliente.phone, "Ya está lista la factura por su compra en DSW"),
+      await sendWhatsapp(cliente.phone, "Ya está lista la factura por su compra en DSW")
       
       
     var pdfPath
@@ -48,7 +48,7 @@ const resolvers = {
     
     }finally{
       try{
-      await sendFactura(cliente.email, "Ya está lista la factura por su compra en MIKES.COM", pdfPath)
+      await sendFactura(cliente.email, "Ya está lista la factura por su compra en DSW", pdfPath)
       }
       catch(error){
         console.error('Error al enviar el PDF:', error.message);
