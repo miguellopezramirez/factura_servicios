@@ -3,6 +3,7 @@ const {sendFactura} = require('../services/emailService')
 const {sendText} = require('../services/sms');
 const {sendWhatsapp} = require('../services/whatsapp')
 const { generarPDF } = require('../services/pdfService');
+const { generarResumenCompra } = require("../services/geminiService");
 
 const resolvers = {
   Mutation: {
@@ -32,8 +33,24 @@ const resolvers = {
         date: new Date().toISOString()
       })
       
-      await sendText(cliente.phone, "Ya está lista la factura por su compra en DSW"),
-      await sendWhatsapp(cliente.phone, "Ya está lista la factura por su compra en DSW")
+      const datosFactura = {
+        customer: {
+          name: cliente.legal_name || cliente.name || "Cliente",
+        },
+        total: factura.total / 100, // convertir de centavos a pesos
+        items: items.map(item => ({
+          quantity: item.quantity,
+          product: {
+            name: item.name || item.product_id // ajusta según tu estructura
+          }
+        }))
+      };
+
+      // Generar resumen con Gemini
+      const resumenCompra = await generarResumenCompra(datosFactura);
+
+      await sendText(cliente.phone, resumenCompra),
+      await sendWhatsapp(cliente.phone, resumenCompra)
       
       
     var pdfPath
@@ -48,7 +65,7 @@ const resolvers = {
     
     }finally{
       try{
-      await sendFactura(cliente.email, "Ya está lista la factura por su compra en DSW", pdfPath)
+      await sendFactura(cliente.email, resumenCompra, pdfPath);
       }
       catch(error){
         console.error('Error al enviar el PDF:', error.message);
