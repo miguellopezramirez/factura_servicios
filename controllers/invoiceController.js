@@ -31,19 +31,28 @@ const resolvers = {
         type,
         date: new Date().toISOString()
       })
-      Promise.all([ sendFactura(cliente.email, JSON.stringify(factura)),
-       sendText(cliente.phone, JSON.stringify(factura)),
-       sendWhatsapp(cliente.phone, JSON.stringify(factura))])
+      
+      await sendText(cliente.phone, "Ya está lista la factura por su compra en MIKES.COM"),
+      await sendWhatsapp(cliente.phone, "Ya está lista la factura por su compra en MIKES.COM")
       
       
-      
+    var pdfPath
 
       // Generar PDF con los datos de la factura
     try {
-      const pdfPath = generarPDF(factura, items, `factura-${factura.id}.pdf`);
+      pdfPath = await generarPDF(factura, items, `factura-${factura.id}.pdf`);
       console.log('PDF generado en:', pdfPath);
+      
     } catch (error) {
       console.error('Error al generar el PDF:', error.message);
+    
+    }finally{
+      try{
+      await sendFactura(cliente.email, "Ya está lista la factura por su compra en MIKES.COM", pdfPath)
+      }
+      catch(error){
+        console.error('Error al enviar el PDF:', error.message);
+      }
     }
 
 
