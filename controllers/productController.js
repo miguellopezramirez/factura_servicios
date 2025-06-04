@@ -37,14 +37,19 @@ const resolvers = {
         throw new Error('Error al crear el producto: ' + error.message);
       }
     },
-    updateProducto: async (_, { id, input }) => {
-      try {
-        const producto = await facturapi.products.update(id, input);
-        return producto;
-      } catch (error) {
-        throw new Error(`Error al actualizar el producto con ID ${id}: ${error.message}`);
-      }
-    },
+    updateProducto: async (_, { id, ...updates }) => {
+  try {
+    // Filtra campos undefined para no enviarlos a Facturapi
+    const filteredUpdates = Object.fromEntries(
+      Object.entries(updates).filter(([_, v]) => v !== undefined)
+    );
+
+    const producto = await facturapi.products.update(id, filteredUpdates);
+    return producto;
+  } catch (error) {
+    throw new Error(`Error al actualizar el producto con ID ${id}: ${error.message}`);
+  }
+},
     deleteProducto: async (_, { id }) => {
       try {
         await facturapi.products.del(id);
