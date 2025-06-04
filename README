@@ -1,1 +1,35 @@
-## GraphQL con Firebase Firestore - Correos
+# API de Facturación con GraphQL
+
+Esta API permite la gestión de un sistema de facturación utilizando **GraphQL**. Incluye funcionalidades para registrar usuarios, productos y facturas, así como el envío automático de notificaciones por correo electrónico, WhatsApp y SMS al momento de generar una factura.
+
+## Características
+
+- Registro y gestión de usuarios
+- Registro y gestión de productos
+- Creación de facturas
+- Generación de PDF para cada factura
+- Envío automático de:
+  - **Correo electrónico** con el PDF adjunto
+  - **Mensaje de WhatsApp** con resumen de la factura
+  - **SMS** con notificación de facturación
+
+## Tecnologías
+
+- **GraphQL** para consultas y mutaciones
+- **Node.js** como entorno de ejecución
+- **Librería de generación de PDFs** (por ejemplo, `pdfkit`, `puppeteer` o similar)
+- **Servicios de mensajería**:
+  - Correo: SendGrid
+  - WhatsApp: whiskeysockets/baileys
+  - SMS: SMS Mobile API
+
+## Instalación
+
+```bash
+npm install
+npm run dev
+```
+## Consideraciones extras es necesario tener cuenta en los siguientes servicios
+Cuenta de prueba de FacturaAPI y agregar la apikey cómo: FACTURAPI_API_KEY
+
+Crear una cuenta de SMS Mobile API configurarla con el celular y agregar el apikey como: SMS_MOBILE_API
