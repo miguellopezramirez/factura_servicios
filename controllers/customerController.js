@@ -25,6 +25,10 @@ const resolvers = {
       if (!/^[A-ZÑ&]{3,4}\d{6}[A-V1-9][0-9A-Z]([0-9A])?$/.test(tax_id)) {
         throw new Error('RFC inválido');
       }
+      //Validar teléfono (formato: +52 seguido de 10 dígitos)
+      if (phone && !/^\+52\d{10}$/.test(phone)) {
+        throw new Error('Teléfono inválido. Debe comenzar con +52 seguido de 10 dígitos (ej: +521234567890)');
+      }
       const cliente = await facturapi.customers.create({
         legal_name,
         tax_id,
@@ -37,8 +41,13 @@ const resolvers = {
     },
 
     updateCliente: async (_, { id, ...updates }) => {
+      // Validar RFC
       if (updates.tax_id && !/^[A-ZÑ&]{3,4}\d{6}[A-V1-9][0-9A-Z]([0-9A])?$/.test(updates.tax_id)) {
         throw new Error('RFC inválido');
+      }
+      //Validar teléfono (formato: +52 seguido de 10 dígitos)
+      if (updates.phone && !/^\+52\d{10}$/.test(updates.phone)) {
+        throw new Error('Teléfono inválido. Debe comenzar con +52 seguido de 10 dígitos (ej: +521234567890)');
       }
       if (updates.address) {
         updates.address.country = updates.address.country || "MEX";
