@@ -58,7 +58,7 @@ const resolvers = {
       // Generar resumen con Gemini
       const resumenCompra = await generarResumenCompra(datosFactura);
 
-      await sendText(cliente.phone, resumenCompra),
+      await sendText(cliente.phone, "Ya esta lista su factura"),
       await sendWhatsapp(cliente.phone, resumenCompra)
       
       
