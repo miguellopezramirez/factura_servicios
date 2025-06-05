@@ -54,10 +54,7 @@ const resolvers = {
         }))
       };
 
-    //   for (let i = 0; i < items.length; i++) {
-    //   const producto = await facturapi.products.retrieve(items[i].product_id);
-    //   items[i].description = producto.description || producto.name;
-    // }
+
       // Generar resumen con Gemini
       const resumenCompra = await generarResumenCompra(datosFactura);
 

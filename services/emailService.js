@@ -28,7 +28,7 @@ const sendFactura = async (email, message, pdfPath) => {
     const msg = {
       to: email,
       from: 'guelito002@gmail.com', // Debe estar verificado en SendGrid
-      subject: 'Factura nueva desde mikes.com',
+      subject: 'Factura nueva desde ITT Servicios WEB',
       text: `La información de tu factura es: ${message}`,
       attachments: [
         {
