@@ -16,7 +16,7 @@ async function generarResumenCompra(factura) {
     (item) => `${item.quantity} x ${item.product.name}`
   ).join(", ");
 
-  const prompt = `Redacta un mensaje amable y personalizado para un cliente que acaba de comprar lo siguiente: ${productos}, por un total de $${factura.total}. El cliente se llama ${factura.customer.name}. y nuestra empresa se llama ITT Servicios WEB`;
+  const prompt = `Redacta un mensaje amable y personalizado para un cliente que acaba de comprar lo siguiente: ${productos}, por un total de $${factura.total} pesos méxicanos. El cliente se llama ${factura.customer.name}. y nuestra empresa se llama ITT Servicios WEB`;
 
   try {
     const result = await model.generateContent(prompt);
