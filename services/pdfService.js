@@ -35,7 +35,7 @@ function generarPDF(factura, items, filename = 'factura.pdf') {
   // Tabla de productos
   doc.text('Productos:', { underline: true });
   items.forEach((item, i) => {
-    doc.text(`${i + 1}. Producto: ${item.product_id} - Cantidad: ${item.quantity}`);
+    doc.text(`${i + 1}. Producto: ${item.description} - Cantidad: ${item.quantity}`);
   });
 
   doc.moveDown();

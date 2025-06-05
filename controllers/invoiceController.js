@@ -19,6 +19,12 @@ const resolvers = {
       if (!items || items.length === 0) {
         throw new Error('Debe incluir al menos un producto');
       }
+
+      for (let i = 0; i < items.length; i++) {
+        const producto = await facturapi.products.retrieve(items[i].product_id);
+        items[i].description = producto.description;
+      }
+
       const cliente = await facturapi.customers.retrieve(customer_id);
       const factura = await facturapi.invoices.create({
         customer: customer_id,
@@ -32,6 +38,8 @@ const resolvers = {
         type,
         date: new Date().toISOString()
       })
+
+
       
       const datosFactura = {
         customer: {
@@ -41,7 +49,7 @@ const resolvers = {
         items: items.map(item => ({
           quantity: item.quantity,
           product: {
-            name: item.name || item.product_id // ajusta según tu estructura
+            name: item.description
           }
         }))
       };
